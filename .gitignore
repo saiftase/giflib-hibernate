@@ -7,6 +7,9 @@
 ## Gradle
 .gradle/
 
+## Data
+data/
+
 ## Package Files #
 *.jar
 !h2*.jar
