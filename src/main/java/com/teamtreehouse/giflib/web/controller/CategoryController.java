@@ -2,6 +2,7 @@ package com.teamtreehouse.giflib.web.controller;
 
 import com.teamtreehouse.giflib.model.Category;
 import com.teamtreehouse.giflib.service.CategoryService;
+import com.teamtreehouse.giflib.web.Color;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ public class CategoryController {
     @SuppressWarnings("unchecked")
     public String listCategories(Model model) {
         List<Category> categories = categoryService.findAll();
-
         model.addAttribute("categories",categories);
         return "category/index";
     }
@@ -43,8 +43,8 @@ public class CategoryController {
     // Form for adding a new category
     @RequestMapping("categories/add")
     public String formNewCategory(Model model) {
-        // TODO: Add model attributes needed for new form
-
+        model.addAttribute("category", new Category());
+        model.addAttribute("colors", Color.values());
         return "category/form";
     }
 
@@ -67,11 +67,9 @@ public class CategoryController {
 
     // Add a category
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
-    public String addCategory() {
-        // TODO: Add category if valid data was received
-
-        // TODO: Redirect browser to /categories
-        return null;
+    public String addCategory(Category category) {
+        categoryService.save(category);
+        return "redirect:/categories";
     }
 
     // Delete an existing category
