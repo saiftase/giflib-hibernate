@@ -3,6 +3,7 @@ package com.teamtreehouse.giflib.web.controller;
 import com.teamtreehouse.giflib.model.Category;
 import com.teamtreehouse.giflib.service.CategoryService;
 import com.teamtreehouse.giflib.web.Color;
+import com.teamtreehouse.giflib.web.FlashMessage;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,7 @@ public class CategoryController {
             return "redirect:/categories/add";
         }
         categoryService.save(category);
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Category successfully added", FlashMessage.Status.SUCCESS));
         return "redirect:/categories";
     }
 
