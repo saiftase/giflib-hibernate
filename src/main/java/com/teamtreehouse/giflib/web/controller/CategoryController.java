@@ -8,10 +8,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,10 @@ public class CategoryController {
 
     // Add a category
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
-    public String addCategory(Category category) {
+    public String addCategory(@Valid Category category, BindingResult result) {
+        if(result.hasErrors()){
+            return "redirect:/categories/add";
+        }
         categoryService.save(category);
         return "redirect:/categories";
     }
