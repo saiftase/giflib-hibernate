@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class CategoryServiceImpl implements CategoryService{
     @Autowired
@@ -28,7 +29,10 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public void delete(Category category) {
-
+    public void delete(Category category){
+        if(category.getGifs().size() > 0) {
+            throw new CategoryNotEmptyException();
+        }
+        categoryDao.delete(category);
     }
 }

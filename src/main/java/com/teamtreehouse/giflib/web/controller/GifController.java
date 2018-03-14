@@ -1,6 +1,5 @@
 package com.teamtreehouse.giflib.web.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import com.teamtreehouse.giflib.model.Gif;
 import com.teamtreehouse.giflib.service.CategoryService;
 import com.teamtreehouse.giflib.service.GifService;

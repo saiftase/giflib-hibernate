@@ -1,6 +1,7 @@
 package com.teamtreehouse.giflib.web.controller;
 
 import com.teamtreehouse.giflib.model.Category;
+import com.teamtreehouse.giflib.service.CategoryNotEmptyException;
 import com.teamtreehouse.giflib.service.CategoryService;
 import com.teamtreehouse.giflib.web.Color;
 import com.teamtreehouse.giflib.web.FlashMessage;
@@ -38,9 +39,7 @@ public class CategoryController {
     // Single category page
     @RequestMapping("/categories/{categoryId}")
     public String category(@PathVariable Long categoryId, Model model) {
-        // TODO: Get the category given by categoryId
-        Category category = null;
-
+        Category category = categoryService.findById(categoryId);
         model.addAttribute("category", category);
         return "category/details";
     }
@@ -99,10 +98,15 @@ public class CategoryController {
 
     // Delete an existing category
     @RequestMapping(value = "/categories/{categoryId}/delete", method = RequestMethod.POST)
-    public String deleteCategory(@PathVariable Long categoryId) {
-        // TODO: Delete category if it contains no GIFs
-
-        // TODO: Redirect browser to /categories
-        return null;
+    public String deleteCategory(@PathVariable Long categoryId, RedirectAttributes redirectAttributes) {
+        Category cat = categoryService.findById(categoryId);
+        try {
+            categoryService.delete(cat);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Category Deleted", FlashMessage.Status.SUCCESS));
+            return "redirect:/categories";
+        }catch(CategoryNotEmptyException e){
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Only empty categories can be deleted.", FlashMessage.Status.FAILURE));
+            return String.format("redirect:/categories/%s/edit", categoryId);
+        }
     }
 }
